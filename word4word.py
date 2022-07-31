@@ -91,9 +91,9 @@ def main():
                 for i in range(total_puzzles):
                     target_words = words_dict.sample(4).to_list()
                     grid, word_hints, board= generate_puzzle_data(target_words=target_words)
-                    puzzle_data.loc[len(puzzle_data)] = list(map(lambda x:x[0], sorted(grid, key=lambda x:x[1]))) + list(word_hints.keys()) + list(word_hints.values())
+                    puzzle_data.loc[len(puzzle_data)] = list(map(lambda x:x[0].upper(), sorted(grid, key=lambda x:x[1]))) + list(word_hints.keys()) + list(word_hints.values())
                 puzzle_data.to_csv("puzzles.csv", index=False)
-                if(puzzle_data==1):
+                if(total_puzzles==1):
                     print(grid)
                     print(board)
                     print(word_hints)
