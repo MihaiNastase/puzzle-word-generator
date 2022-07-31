@@ -91,7 +91,11 @@ def main():
                 for i in range(total_puzzles):
                     target_words = words_dict.sample(4).to_list()
                     grid, word_hints, board= generate_puzzle_data(target_words=target_words)
-                    puzzle_data.loc[len(puzzle_data)] = list(map(lambda x:x[0].upper(), sorted(grid, key=lambda x:x[1]))) + list(word_hints.keys()) + list(word_hints.values())
+                    word_order = list(map(lambda x:x[1][1], filter(lambda x:x[1][0]==0, grid)))
+                    new_sort = ["","","",""]
+                    for i,e in enumerate(word_order):
+                        new_sort[e]=target_words[i]
+                    puzzle_data.loc[len(puzzle_data)] = list(map(lambda x:x[0].upper(), sorted(grid, key=lambda x:x[1]))) + new_sort + [word_hints[word] for word in new_sort]
                 puzzle_data.to_csv("puzzles.csv", index=False)
                 if(total_puzzles==1):
                     print(grid)
