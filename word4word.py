@@ -85,13 +85,22 @@ def main():
         if user_input == '0':
             break
         elif user_input == '1':
-            target_words = words_dict.sample(4).to_list()
-            grid, word_hints, board= generate_puzzle_data(target_words=target_words)
-            #print(grid)
-            print(board)
-            print(word_hints)
-            input("Press Enter to continue...")
-            os.system('cls')
+            try:
+                total_puzzles = int(input("Input number of desired puzzles: "))
+                puzzle_data = pd.DataFrame(columns=["A1","A2","A3","A4","B1","B2","B3","B4","C1","C2","C3","C4","D1","D2","D3","D4","word1","word2","word3","word4","hint1","hint2","hint3","hint4"])
+                for i in range(total_puzzles):
+                    target_words = words_dict.sample(4).to_list()
+                    grid, word_hints, board= generate_puzzle_data(target_words=target_words)
+                    puzzle_data.loc[len(puzzle_data)] = list(map(lambda x:x[0], sorted(grid, key=lambda x:x[1]))) + list(word_hints.keys()) + list(word_hints.values())
+                puzzle_data.to_csv("puzzles.csv", index=False)
+                if(puzzle_data==1):
+                    print(grid)
+                    print(board)
+                    print(word_hints)
+                    input("Press Enter to continue...")
+                os.system('cls')
+            except:
+                os.system('cls')
         elif user_input == '2':
             print(get_unique_combo(words_dict=words_dict, max_attempts=500))
             input("Press Enter to continue...")
